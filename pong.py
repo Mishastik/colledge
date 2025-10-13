@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QMainWindow, QWidget, QApplication, QLabel
-from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtWidgets import *
+from PyQt6.QtCore import *
 import sys
 
 
@@ -9,6 +9,8 @@ class MainWindow(QMainWindow):
 
         widget = QWidget()
         self.setCentralWidget(widget)
+
+        self.key = None
 
         lbl_field = QLabel(widget)
         lbl_field.setStyleSheet('background-color: black')
