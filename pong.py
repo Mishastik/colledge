@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import *
-from PyQt6.QtCore import *
+from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QLabel
+from PyQt5.QtCore import Qt, QTimer
 import sys
 
 
@@ -9,8 +9,6 @@ class MainWindow(QMainWindow):
 
         widget = QWidget()
         self.setCentralWidget(widget)
-
-        self.key = None
 
         lbl_field = QLabel(widget)
         lbl_field.setStyleSheet('background-color: black')
@@ -28,7 +26,8 @@ class MainWindow(QMainWindow):
         self.ball['speedY'] = 2
 
         self.panel_player = QLabel('0', lbl_field)
-        self.panel_player.setStyleSheet('background-color: transparent; color: white;')
+        self.panel_player.setStyleSheet('''background-color: transparent;
+                                        color: white;''')
         self.panel_player.setGeometry(199, 5, 200, 15)
         self.score_player = 0
 
@@ -38,7 +37,8 @@ class MainWindow(QMainWindow):
         self.player = {}
 
         self.panel_enemy = QLabel('0', lbl_field)
-        self.panel_enemy.setStyleSheet('background-color: transparent; color: white;')
+        self.panel_enemy.setStyleSheet('''background-color: transparent;
+                                        color: white;''')
         self.panel_enemy.setGeometry(599, 5, 200, 15)
         self.score_enemy = 0
 
@@ -48,38 +48,32 @@ class MainWindow(QMainWindow):
         self.enemy = {}
 
         self.timer = QTimer(self)
-        self.timer.timeout.connect(self.playerMove)
-        self.timer.timeout.connect(self.enemyMove)
+        # self.timer.timeout.connect(self.playerMove)
+        # self.timer.timeout.connect(self.enemyMove)
         self.timer.timeout.connect(self.ballMove)
         self.timer.start(20)
 
     def keyPressEvent(self, event):
-        self.key = event.key()
-
-    def keyReleaseEvent(self, event):
-        self.key = None
-
-    def playerMove(self):
+        key = event.key()
         self.player['up'] = self.racket_player.geometry().y()
         self.player['down'] = self.player['up'] + self.racket_player.height()
         self.player['left'] = self.racket_player.geometry().x()
         self.player['right'] = self.player['left'] + self.racket_player.width()
-        if self.key == Qt.Key.Key_W:
+        if key == Qt.Key.Key_W:
             if self.player['up'] > 0:
                 self.racket_player.move(self.player['left'], self.player['up'] - 5)
-        if self.key == Qt.Key.Key_S:
+        if key == Qt.Key.Key_S:
             if self.player['down'] < 400:
                 self.racket_player.move(self.player['left'], self.player['up'] + 5)
 
-    def enemyMove(self):
         self.enemy['up'] = self.racket_enemy.geometry().y()
         self.enemy['down'] = self.enemy['up'] + self.racket_enemy.height()
         self.enemy['left'] = self.racket_enemy.geometry().x()
         self.enemy['right'] = self.enemy['left'] + self.racket_enemy.width()
-        if self.key == Qt.Key.Key_Up:
+        if key == Qt.Key.Key_Up:
             if self.enemy['up'] > 0:
                 self.racket_enemy.move(self.enemy['left'], self.enemy['up'] - 5)
-        if self.key == Qt.Key.Key_Down:
+        if key == Qt.Key.Key_Down:
             if self.enemy['down'] < 400:
                 self.racket_enemy.move(self.enemy['left'], self.enemy['up'] + 5)
 
